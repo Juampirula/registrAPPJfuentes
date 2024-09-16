@@ -36,4 +36,9 @@ export class LoginPage {
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
+
+  // Método para ir a la página de restablecer contraseña
+  goToResetPassword() {
+    this.navCtrl.navigateForward('/reset-password');
+  }
 }
