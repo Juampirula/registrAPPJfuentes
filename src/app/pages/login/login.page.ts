@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,34 +12,25 @@ export class LoginPage {
   password: string = '';
   showPassword: boolean = false;
 
-  constructor(
-    private navCtrl: NavController,
-    private loadingController: LoadingController
-  ) {}
+  constructor(private navCtrl: NavController, private authService: AuthService) {}
 
-  async login() {
-    if (this.username.trim() === '' || this.password.trim() === '') {
-      alert('Por favor, ingrese todos los campos.');
-      return;
-    }
-
-    const loading = await this.loadingController.create({
-      message: 'Iniciando sesión...',
-      duration: 2000
+  login() {
+    this.authService.login(this.username, this.password).subscribe({
+      next: (response: any) => {
+        alert(response.message);
+        this.navCtrl.navigateForward('/home');
+      },
+      error: (error: any) => {
+        alert(error.message);
+      },
     });
-    await loading.present();
-
-    setTimeout(() => {
-      this.navCtrl.navigateForward('/home', { state: { username: this.username } });
-    }, 2000);
   }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
-  // Método para ir a la página de restablecer contraseña
-  goToResetPassword() {
-    this.navCtrl.navigateForward('/reset-password');
+  goToRegister() {
+    this.navCtrl.navigateForward('/register');
   }
 }

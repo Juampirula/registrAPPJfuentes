@@ -1,9 +1,20 @@
-ion-card {
-  margin-top: 50px;
-  --border-radius: 15px;
+.en-progreso {
+  background-color: yellow;
 }
 
-ion-card-title {
+ion-content {
+  --padding-top: 16px;
+}
+
+h3 {
+  margin-top: 24px;
   color: #3880ff;
-  text-align: center;
+}
+
+ion-input, ion-textarea {
+  margin-right: 8px;
+}
+
+ion-list {
+  margin-top: 16px;
 }

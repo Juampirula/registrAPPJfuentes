@@ -1,17 +1,53 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Inicio</ion-title>
+    <ion-title>RegistrAPP - Inicio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Cerrar Sesión</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Bienvenido, {{ username }}!</ion-card-title>
-    </ion-card-header>
+  <h2>Bienvenido, {{ currentUser }}!</h2>
 
-    <ion-card-content>
-      <p>Te has autenticado correctamente. Ahora puedes acceder a todas las funcionalidades.</p>
-    </ion-card-content>
-  </ion-card>
+  <ion-item>
+    <ion-input placeholder="Nombre de la tarea" [(ngModel)]="nuevaTareaNombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input placeholder="Descripción de la tarea" [(ngModel)]="nuevaTareaDescripcion"></ion-input>
+    <ion-button (click)="agregarTarea()">Registrar Tarea</ion-button>
+  </ion-item>
+
+  <h3>Tareas Activas</h3>
+  <ion-list>
+    <ion-item *ngFor="let tarea of tareasActivas" [ngClass]="{ 'en-progreso': tarea.estado === 'en progreso' }">
+      <ion-input [(ngModel)]="tarea.nombre" [readonly]="!tarea.editable" style="width: 100%;"></ion-input>
+      <ion-textarea [(ngModel)]="tarea.descripcion" [readonly]="!tarea.editable" placeholder="Descripción"></ion-textarea>
+
+      <ion-button fill="clear" (click)="editarTarea(tarea)" *ngIf="!tarea.enProgreso">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button color="warning" (click)="comenzarTarea(tarea)" *ngIf="!tarea.enProgreso">Comenzar</ion-button>
+
+      <ion-label *ngIf="tarea.enProgreso">⏲️ {{ tarea.tiempo }}</ion-label>
+
+      <ion-button color="success" (click)="completarTarea(tarea)" *ngIf="tarea.enProgreso">Completar</ion-button>
+      <ion-button color="danger" (click)="eliminarTarea(tarea)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <h3>Tareas Completadas</h3>
+  <ion-list>
+    <ion-item *ngFor="let tarea of tareasCompletadas">
+      <ion-input [(ngModel)]="tarea.nombre" readonly="true" style="width: 100%;"></ion-input>
+      <ion-textarea [(ngModel)]="tarea.descripcion" readonly="true"></ion-textarea>
+
+      <p>Tarea completada en: {{ tarea.tiempo }}</p>
+
+      <ion-button color="warning" (click)="devolverTarea(tarea)">Devolver</ion-button>
+      <ion-button color="danger" (click)="eliminarTareaCompletada(tarea)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>

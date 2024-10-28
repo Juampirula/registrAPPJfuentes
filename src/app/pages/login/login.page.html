@@ -36,9 +36,8 @@
     <ion-button expand="block" type="submit" class="login-btn">Ingresar</ion-button>
   </form>
 
-  <!-- Botón para recuperar contraseña -->
-  <ion-button expand="block" fill="clear" color="medium" (click)="goToResetPassword()">
-    Recuperar Contraseña
-  </ion-button>
-
+  <div class="ion-text-center">
+    <ion-button fill="clear" (click)="goToRegister()">Crear Usuario</ion-button>
+    <ion-button expand="block" fill="clear" routerLink="/reset-password">¿Olvidaste tu contraseña?</ion-button>
+  </div>
 </ion-content>

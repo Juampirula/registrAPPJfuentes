@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -8,15 +9,24 @@ import { NavController } from '@ionic/angular';
 })
 export class ResetPasswordPage {
   username: string = '';
+  newPassword: string = '';
 
-  constructor(private navCtrl: NavController) {}
+  constructor(private navCtrl: NavController, private apiService: ApiService) {}
 
-  resetPassword() {
-    if (this.username) {
-      alert('Instrucciones de recuperación enviadas a ' + this.username);
-      this.navCtrl.navigateBack('/login');
-    } else {
-      alert('Por favor, ingrese su nombre de usuario.');
+  cambiarPassword() {
+    if (this.username.trim() === '' || this.newPassword.trim() === '') {
+      alert('Por favor, complete todos los campos.');
+      return;
     }
+
+    this.apiService.cambiarPassword(this.username, this.newPassword).subscribe({
+      next: (response: any) => {
+        alert(response.message); // Muestra el mensaje de éxito
+        this.navCtrl.navigateForward('/login'); // Redirige al Login
+      },
+      error: (error: any) => {
+        alert(error.message); // Muestra el error si el usuario no es encontrado
+      },
+    });
   }
 }
